@@ -1,26 +1,26 @@
-function Card(props) {
+function Card({card, onCardClick}) {
 
-  function handleClick(card) {
-    props.onCardClick(card);    
+  function handleClick() {
+    onCardClick(card);    
   }  
 
   return (
     <div className="content__card">
       <img
         className="content__photo"
-        src={props.card.link}
-        alt={`${props.card.name}. Иллюстрация`}
-        onClick={() => handleClick(props.card)}
+        src={card.link}
+        alt={`${card.name}. Иллюстрация`}
+        onClick={handleClick}
       />
       <div className="content__caption-container">
-        <p className="content__place-name">{props.card.name}</p>
+        <p className="content__place-name">{card.name}</p>
         <div className="content__like-container">
           <button
             className="content__like"
             aria-label="Поставить лайк на фото"
             type="button"
           ></button>
-          <p className="content__like-sum">{props.card.likes.length}</p>
+          <p className="content__like-sum">{card.likes.length}</p>
         </div>
       </div>
       <button

@@ -9,7 +9,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setPreviewCardPopupOpen] = useState(false);
+  const [selectedCard, setPreviewCardPopupOpen] = useState(null);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -31,7 +31,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    setPreviewCardPopupOpen(false);
+    setPreviewCardPopupOpen(null);
   }
 
   return (
@@ -47,7 +47,6 @@ function App() {
       <PopupWithForm
         name="edit-profile"
         title="Редактировать профиль"
-        button="Сохранить"
         isOpen={isEditProfilePopupOpen && "popup_opened"}
         onClose={closeAllPopups}
       >
@@ -109,7 +108,6 @@ function App() {
       <PopupWithForm
         name="edit-avatar"
         title="Обновить аватар"
-        button="Сохранить"
         isOpen={isEditAvatarPopupOpen && "popup_opened"}
         onClose={closeAllPopups}
       >
@@ -127,7 +125,6 @@ function App() {
       <PopupWithForm name="are-you-sure" title="Вы уверены?" button="Да" />
       <ImagePopup
         card={selectedCard}
-        isOpen={selectedCard !== false && "popup_opened"}
         onClose={closeAllPopups}
       />
     </div>
