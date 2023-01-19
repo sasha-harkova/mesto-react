@@ -1,15 +1,19 @@
-# Project: Mesto
+# Проект: Mesto React
 
-This is a social networking site where **you can post photos, like them, delete them and edit your profile**.
+Место - это социальная сеть, где пользователь может редактировать свой профиль, добавлять новые фото, просматривать и лайкать чужие фото. 
 
-Here were used:
-* HTML5;
-* CSS3;
-* ES6;
-* Node.js;
-* React.js;
-* BEM technology;
-etc
+Технологический стэк:
+* HTML5
+* CSS3
+* ES6
+* БЭМ
+* React
+___
 
-* [Link to the Figma layout](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
-* [Link to the website](https://sasha-harkova.github.io/mesto/)
+Техническая информация
+* Страница адаптирована под устройства с расширением от 320px до 1440px;
+* При разработке сайта использованы технологии grid и flex, поддерживаемые большинством современных браузеров в последней версии;
+* Для разработки интерфейса использован React;
+* Файловая структура: БЭМ Nested;
+* Проект подключен к серверу с помощью REAST API;
+* [Ссылка на макет Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
