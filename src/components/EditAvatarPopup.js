@@ -1,17 +1,33 @@
 import PopupWithForm from "./PopupWithForm";
 import { useRef } from "react";
+import { useForm } from "react-hook-form";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, button }) {
   const avatarRef = useRef();
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: "all",
+  });
 
-  function handleSubmit(e) {
-    e.preventDefault();  
+  const { ref, ...rest } = register('avatarlink', {
+        required: "Поле обязательно к заполнению",
+        pattern: {
+          value:
+            /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/,
+          message: "Укажите верную ссылку",
+        }
+})
+
+  function onSubmit() {
     onUpdateAvatar({
       avatar: avatarRef.current.value,
     });
-    e.target.reset();
-  } 
+    reset();
+  }
 
   return (
     <PopupWithForm
@@ -19,20 +35,30 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       title="Обновить аватар"
       isOpen={isOpen && "popup_opened"}
       onClose={onClose}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       onUpdateAvatar={onUpdateAvatar}
+      button={button}
+      isValid={isValid}
     >
-      <input
-        required
+      <input {...rest}
         id="avatarlink"
         name="avatarlink"
-        className="popup__input"
+        className={`popup__input popup__input_el_avatar ${
+          errors.avatarlink && "popup__input_type_error"
+        }`}
         type="url"
         placeholder="Ссылка на новый аватар"
         defaultValue=""
-        ref={avatarRef}
+        ref={(e) => {
+          ref(e);
+          avatarRef.current = e;
+        }}
       />
-      <span className="popup__error" id="avatarlink-error"></span>
+      {errors.avatarlink && (
+        <span className="popup__error_visible" id="username-error">
+          {errors.avatarlink.message}
+        </span>
+      )}
     </PopupWithForm>
   );
 }
