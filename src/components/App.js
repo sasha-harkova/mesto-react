@@ -8,7 +8,6 @@ import AddPlacePopup from "./AddPlacePopup";
 import DeleteConfirmationPopup from "./DeleteConfirmationPopup"
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import СurrentCardContext from "../contexts/СurrentCardContext";
 import api from "../utils/api";
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
   const [isDeleteConfirmationPopupOpen, setDeleteConfirmationPopupOpen] = useState(false);
   const [selectedCard, setPreviewCardPopupOpen] = useState(null);
   const [currentUser, getUserInfo] = useState("");
-  const [currentCard, getCurrentCard] = useState(null);
+  const [deletingCard, getDeletingCard] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -63,6 +62,7 @@ function App() {
     setAddPlacePopupOpen(false);
     setDeleteConfirmationPopupOpen(false);
     setPreviewCardPopupOpen(null);
+    getDeletingCard(null);
     window.removeEventListener("keydown", closeByEsc);
   }
 
@@ -79,7 +79,7 @@ function App() {
   }
 
   function handleDeleteCardClick(card) {
-    getCurrentCard(card);
+    getDeletingCard(card);
     setDeleteConfirmationPopupOpen(true);
     window.addEventListener("keydown", closeByEsc);
   }
@@ -141,46 +141,45 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <СurrentCardContext.Provider value={currentCard}>
-        <div className="page">
-          <Header />
-          <Main
-            onCardClick={handleCardClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardLike={handleCardLike}
-            cards={cards}
-            onCardDelete={handleDeleteCardClick}
-          />
-          <Footer />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            button={isLoading && 'Сохранение...'}
-          />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            button={isLoading && 'Сохранение...'}
-          />
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlace}
-            button={isLoading ? 'Создание...' : 'Создать'}
-          />
-          <DeleteConfirmationPopup
-            isOpen={isDeleteConfirmationPopupOpen}
-            onClose={closeAllPopups}
-            onDeleteCard={handleCardDelete}
-            button={isLoading ? 'Удаление...' : 'Да'}
-          />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        </div>
-      </СurrentCardContext.Provider>
+      <div className="page">
+        <Header />
+        <Main
+          onCardClick={handleCardClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardLike={handleCardLike}
+          cards={cards}
+          onCardDelete={handleDeleteCardClick}
+        />
+        <Footer />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          button={isLoading && "Сохранение..."}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          button={isLoading && "Сохранение..."}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlace}
+          button={isLoading ? "Создание..." : "Создать"}
+        />
+        <DeleteConfirmationPopup
+          isOpen={isDeleteConfirmationPopupOpen}
+          onClose={closeAllPopups}
+          onDeleteCard={handleCardDelete}
+          card={deletingCard}
+          button={isLoading ? "Удаление..." : "Да"}
+        />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      </div>
     </CurrentUserContext.Provider>
   );
 }

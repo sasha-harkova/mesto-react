@@ -1,37 +1,24 @@
 import PopupWithForm from "./PopupWithForm";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser, button }) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const currentUser = useContext(CurrentUserContext);
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    getValues,
   } = useForm({
     mode: "all",
   });
-
-  useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
-
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-
-  function handleChangeDescription(e) {
-    setDescription(e.target.value);
-  }
+  let values;
 
   function onSubmit() {
     onUpdateUser({
-      name,
-      about: description,
+      name: values.username,
+      about: values.about,
     });
   }
 
@@ -45,6 +32,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, button }) {
       onUpdateUser={onUpdateUser}
       button={button}
       isValid={isValid}
+      onClickSubmit={() => {
+        values = getValues();
+      }}
     >
       <input
         {...register("username", {
@@ -65,8 +55,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, button }) {
         }`}
         type="text"
         placeholder="Введите имя"
-        defaultValue={name}
-        onChange={handleChangeName}
+        defaultValue={currentUser.name}
       />
       {errors.username && (
         <span className="popup__error_visible">
@@ -92,8 +81,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, button }) {
         }`}
         type="text"
         placeholder="Расскажите о себе"
-        defaultValue={description}
-        onChange={handleChangeDescription}
+        defaultValue={currentUser.about}
       />
       {errors.about && (
         <span className="popup__error_visible">

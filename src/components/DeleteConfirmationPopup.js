@@ -1,11 +1,7 @@
 import PopupWithForm from "./PopupWithForm";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import СurrentCardContext from "../contexts/СurrentCardContext";
 
-function DeleteConfirmationPopup({ isOpen, onClose, onDeleteCard, button }) {
-
-  const currentCard = useContext(СurrentCardContext);
+function DeleteConfirmationPopup({ isOpen, onClose, onDeleteCard, card, button }) {
   const {
     formState: { isValid },
     handleSubmit,
@@ -13,7 +9,7 @@ function DeleteConfirmationPopup({ isOpen, onClose, onDeleteCard, button }) {
 
 
   function onSubmit() {
-    onDeleteCard(currentCard);
+    onDeleteCard(card);
   }
 
   return (

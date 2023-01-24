@@ -1,31 +1,28 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState} from "react";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, button }) {
-
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
-    reset
+    reset,
+    getValues
   } = useForm({
     mode: "all",
   });
+  let values;
 
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-
-  function handleChangeLink(e) {
-    setLink(e.target.value);
-  }
+  useEffect(() => {
+    reset()
+  }, [isOpen]);
 
   function onSubmit() {
-    onAddPlace({ name, link });
-    reset();
+    onAddPlace({ 
+      name: values.cardname, 
+      link: values.cardlink
+    });
   }
 
   return (
@@ -38,6 +35,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, button }) {
       onAddPlace={onAddPlace}
       onSubmit={handleSubmit(onSubmit)}
       isValid={isValid}
+      onClickSubmit={() => {
+        values = getValues();
+      }}
     >
       <input
         {...register("cardname", {
@@ -59,7 +59,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, button }) {
         type="text"
         placeholder="Назание"
         defaultValue=""
-        onChange={handleChangeName}
       />
       {errors.cardname && (
         <span className="popup__error_visible">
@@ -83,7 +82,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, button }) {
         type="url"
         placeholder="Ссылка на картинку"
         defaultValue=""
-        onChange={handleChangeLink}
       />
       {errors.cardlink && (
         <span className="popup__error_visible">
